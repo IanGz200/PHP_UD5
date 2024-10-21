@@ -19,60 +19,6 @@ class FrontController
         );
 
         Route::add(
-            '/test',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->showFormularioNombre();
-            },
-            'get'
-        );
-
-        Route::add(
-            '/test',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->doFormularioNombre();
-            },
-            'post'
-        );
-
-        Route::add(
-            '/anagrama',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->showAnagrama();
-            },
-            'get'
-        );
-
-        Route::add(
-            '/anagrama',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->doAnagrama();
-            },
-            'post'
-        );
-
-        Route::add(
-            '/mismas-letras',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->showMismasLetras();
-            },
-            'get'
-        );
-
-        Route::add(
-            '/mismas-letras',
-            function () {
-                $controlador = new EjerciciosController();
-                $controlador->doMismasLetras();
-            },
-            'post'
-        );
-
-        Route::add(
             '/demo-proveedores',
             function () {
                 $controlador = new \Com\Daw2\Controllers\InicioController();
