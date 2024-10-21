@@ -11,7 +11,7 @@
           </li> 
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item <?php echo (in_array($seccion, ['/demo-proveedores'])) ? 'menu-open' : '';?>">
+          <li class="nav-item <?php echo (isset($seccion) && in_array($seccion, ['/demo-proveedores'])) ? 'menu-open' : '';?>">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
