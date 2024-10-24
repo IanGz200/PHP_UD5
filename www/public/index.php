@@ -6,7 +6,7 @@ try{
     $dotenv->load();
     Com\Daw2\Core\FrontController::main();    
 } catch (Exception $e) {
-    if($_ENV['app.debug']){
+    if($_ENV['APP.DEBUG']){
         throw $e;
     }
     else{

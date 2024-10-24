@@ -2,17 +2,18 @@
 
 namespace Com\Daw2\Core;
 
-use Com\Daw2\Controllers\EjerciciosController;
+use Com\Daw2\Controllers\ErroresController;
+use Com\Daw2\Controllers\InicioController;
 use Steampixel\Route;
 
 class FrontController
 {
-    public static function main()
+    public static function main(): void
     {
         Route::add(
             '/',
             function () {
-                $controlador = new \Com\Daw2\Controllers\InicioController();
+                $controlador = new InicioController();
                 $controlador->index();
             },
             'get'
@@ -21,7 +22,7 @@ class FrontController
         Route::add(
             '/demo-proveedores',
             function () {
-                $controlador = new \Com\Daw2\Controllers\InicioController();
+                $controlador = new InicioController();
                 $controlador->demo();
             },
             'get'
@@ -29,17 +30,17 @@ class FrontController
 
         Route::pathNotFound(
             function () {
-                $controller = new \Com\Daw2\Controllers\ErroresController();
+                $controller = new ErroresController();
                 $controller->error404();
             }
         );
 
         Route::methodNotAllowed(
             function () {
-                $controller = new \Com\Daw2\Controllers\ErroresController();
+                $controller = new ErroresController();
                 $controller->error405();
             }
         );
-        Route::run();
+        Route::run($_ENV['HOST.FOLDER']);
     }
 }

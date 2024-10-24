@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="/">
+  <base href="<?php echo $_ENV['HOST.FOLDER'] ?>">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
@@ -78,7 +78,7 @@
         </div>
       </div>
      <?php 
-     include $_ENV['folder.views'].'/templates/left-menu.view.php';
+     include $_ENV['FOLDER.VIEWS'].'/templates/left-menu.view.php';
      ?>      
     </div>
     <!-- /.sidebar -->

@@ -19,7 +19,7 @@ class View
         //Cogemos una instancia de nuestra clase de configuracion.
 
         //Creamos la ruta real a la plantilla
-        $path = $_ENV['folder.views'] . $name;
+        $path = $_ENV['FOLDER.VIEWS'] . $name;
 
         //Si no existe el fichero en cuestion, lanzamos una excepción
         if (file_exists($path) == false) {
@@ -47,7 +47,7 @@ class View
 
         foreach ($views as $v) {
             //Creamos la ruta real a la plantilla
-            $path = $_ENV['folder.views'] . $v;
+            $path = $_ENV['FOLDER.VIEWS'] . $v;
 
             //Si no existe el fichero en cuestion, lanzamos una excepción
             if (file_exists($path) == false) {
@@ -64,7 +64,7 @@ class View
         //Necesario para saber en la vista qué controlador hemos cargado y así por ejemplo marcar en la barra izquierda la sección en la que estamos
         $controller = $this->controller;
         foreach ($views as $v) {
-            $path = $_ENV['folder.views'] . $v;
+            $path = $_ENV['FOLDER.VIEWS'] . $v;
             //Finalmente, incluimos la plantilla.
             include($path);
         }

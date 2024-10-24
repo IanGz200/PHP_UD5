@@ -31,12 +31,12 @@ class DBManager
     public function getConnection($emulatePrepares = false): PDO
     {
         if (is_null($this->db)) {
-            $host = $_ENV['db.host'];
-            $db = $_ENV['db.schema'];
-            $user = $_ENV['db.user'];
-            $pass = $_ENV['db.pass'];
-            $charset = $_ENV['db.charset'];
-            $emulated = (bool)$_ENV['db.emulated'];
+            $host = $_ENV['DB.HOST'];
+            $db = $_ENV['DB.SCHEMA'];
+            $user = $_ENV['DB.USER'];
+            $pass = $_ENV['DB.PASS'];
+            $charset = $_ENV['DB.CHARSET'];
+            $emulated = (bool)$_ENV['DB.EMULATED'];
 
             $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
             $options = [
