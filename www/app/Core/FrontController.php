@@ -81,6 +81,15 @@ class FrontController
             'get'
         );
 
+        Route::add(
+            '/prueba',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\InicioController();
+                $controlador->prueba();
+            },
+            'get'
+        );
+
         Route::pathNotFound(
             function () {
                 $controller = new \Com\Daw2\Controllers\ErroresController();
