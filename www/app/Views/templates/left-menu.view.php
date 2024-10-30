@@ -27,6 +27,15 @@
                 </a>
               </li>              
             </ul>
+              <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="<?php echo $_ENV['HOST.FOLDER'] ?>ejercicio1"
+                         class="nav-link <?php echo $_SERVER['REQUEST_URI'] === $_ENV['HOST.FOLDER'] . 'ejercicio1' ? 'active' : ''; ?>">
+                          <i class="fas fa-laptop-code nav-icon"></i>
+                          <p>Ejercicio 1</p>
+                      </a>
+                  </li>
+              </ul>
           </li>
         </ul>
       </nav>

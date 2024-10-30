@@ -4,6 +4,7 @@ namespace Com\Daw2\Core;
 
 use Com\Daw2\Controllers\ErroresController;
 use Com\Daw2\Controllers\InicioController;
+use Com\Daw2\Controllers\UsuariosController;
 use Steampixel\Route;
 
 class FrontController
@@ -26,6 +27,24 @@ class FrontController
                 $controlador->demo();
             },
             'get'
+        );
+
+        Route::add(
+            '/ejercicio1',
+            function () {
+                $controlador = new InicioController();
+                $controlador->ejer();
+            },
+            'get'
+        );
+
+        Route::add(
+            '/usuarios/new',
+            function () {
+                $controlador = new UsuariosController();
+                $controlador->showNewUsuario();
+
+            }
         );
 
         Route::pathNotFound(
