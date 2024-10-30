@@ -14,8 +14,11 @@
   <component name="PhpCodeSniffer">
     <phpcs_settings>
       <PhpCSConfiguration beautifier_path="$PROJECT_DIR$/www/vendor/bin/phpcbf" tool_path="$PROJECT_DIR$/www/vendor/bin/phpcs" />
-      <phpcs_by_interpreter interpreter_id="86288cdd-faf0-43ab-baaf-27d0f5e41c07" beautifier_path="/var/www/html/vendor/bin/phpcbf" standards="MySource;PEAR;PSR1;PSR12;PSR2;Squiz;Zend" tool_path="/var/www/html/vendor/bin/phpcs" timeout="30000" />
+      <phpcs_by_interpreter interpreter_id="86288cdd-faf0-43ab-baaf-27d0f5e41c07" beautifier_path="/var/www/html/vendor/bin/phpcbf" standards="MySource;PEAR;PSR1;PSR12;PSR2;Squiz;Zend" tool_path="/home/ian.grazianocarballeira/Documentos/PHP/ud5/www/vendor/bin/phpcs" timeout="30000" />
     </phpcs_settings>
+  </component>
+  <component name="PhpExternalFormatter">
+    <option name="externalFormatter" value="PHP_CBF" />
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
