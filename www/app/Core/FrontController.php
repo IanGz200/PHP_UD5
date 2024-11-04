@@ -82,10 +82,40 @@ class FrontController
         );
 
         Route::add(
-            '/test-model',
+            '/test-model-7-1',
             function () {
                 $controlador = new \Com\Daw2\Controllers\UsuarioController();
                 $controlador->testConnect();
+            },
+            'get'
+
+        );
+
+        Route::add(
+            '/test-model-7-2',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                $controlador->testConnect2();
+            },
+            'get'
+
+        );
+
+        Route::add(
+            '/test-model-7-3',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                $controlador->testConnect3();
+            },
+            'get'
+
+        );
+
+        Route::add(
+            '/test-model-7-4',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                $controlador->testConnect4();
             },
             'get'
 

@@ -21,32 +21,4 @@ class InicioController extends \Com\Daw2\Core\BaseController {
         );        
         $this->view->showViews(array('templates/header.view.php', 'proveedores.sample.php', 'templates/footer.view.php'), $data);
     }
-    public function prueba() {
-        $data = array(
-            'titulo' => 'prueba',
-            'breadcrumb' => ['Inicio', 'prueba'],
-            'seccion' => '/prueba'
-        );
-        $this->view->showViews(array('templates/header.view.php', 'provincias.sample.php', 'templates/footer.view.php'), $data);
-    }
-
-    public function ejer() {
-        $data = array(
-            'titulo' => 'Ejercicio 1 del apartado 3',
-            'breadcrumb' => ['Inicio', 'Ejercicio 1'],
-            'seccion' => '/ejercicio1'
-        );
-        $this->view->showViews(array('templates/header.view.php', 'ejercicio1.view.php','templates/footer.view.php'), $data);
-
-    }
-
-    public function bbdd() {
-        $data = array(
-            'titulo' => 'Base de datos',
-            'breadcrumb' => ['Inicio', 'Ejercicio 1'],
-            'seccion' => '/ejercicio1'
-        );
-        $this->view->showViews(array('templates/header.view.php', 'ejercicio1.view.php','templates/footer.view.php'), $data);
-
-    }
 }
