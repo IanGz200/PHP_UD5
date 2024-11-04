@@ -39,4 +39,14 @@ class InicioController extends \Com\Daw2\Core\BaseController {
         $this->view->showViews(array('templates/header.view.php', 'ejercicio1.view.php','templates/footer.view.php'), $data);
 
     }
+
+    public function bbdd() {
+        $data = array(
+            'titulo' => 'Base de datos',
+            'breadcrumb' => ['Inicio', 'Ejercicio 1'],
+            'seccion' => '/ejercicio1'
+        );
+        $this->view->showViews(array('templates/header.view.php', 'ejercicio1.view.php','templates/footer.view.php'), $data);
+
+    }
 }
