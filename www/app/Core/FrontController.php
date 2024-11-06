@@ -121,6 +121,16 @@ class FrontController
 
         );
 
+        Route::add(
+            '/Ejercicio-8-1',
+            function () {
+                $controlador = new \Com\Daw2\Controllers\UsuarioController();
+                $controlador->testConnect5();
+            },
+            'get'
+
+        );
+
         Route::pathNotFound(
             function () {
                 $controller = new \Com\Daw2\Controllers\ErroresController();

@@ -67,6 +67,34 @@ class UsuarioController extends BaseController{
 
     }
 
+    public function testConnect5()
+    {
+
+        $data = array(
+            'titulo' => 'Base de datos',
+            'breadcrumb' => ['Inicio', 'Ejercicio 8', '8-1'],
+            'seccion' => '/Ejercicio-8-1'
+        );
+        $model = new UsuarioModel();
+
+        $data['input'] = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        if (!empty($_GET['username'])) {
+            $data['usuarios'] = $model->getUsuariosFilteredUsername($_GET['username']);
+        }else if(!empty($_GET['rol'])){
+            $data['usuarios'] = $model->getUsuariosFilteredRol($_GET['rol']);
+        }else if(!empty($_GET['nacionalidad'])){
+            $data['usuarios'] = $model->getUsuariosFilteredNacionalidad($_GET['nacionalidad']);
+        }else if(!empty($_GET['salar'])){
+            $data['usuarios'] = $model->getUsuariosFilteredSalar((int)$_GET['min_salar'], (int)$_GET['max_salar']);
+        }else{
+            $data['usuarios'] = $model->getUsuarios();
+        }
+        $this->view->showViews(array('templates/header.view.php', 'ejercicio8.view.php', 'templates/footer.view.php'), $data);
+
+
+    }
+
 
 
 
