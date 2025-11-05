@@ -9,9 +9,27 @@ use Com\Daw2\Models\ConsultasModel;
 
 class ConsultasController extends BaseController
 {
-    public function getAll()
+    public function getTrabajadores()
     {
         $model = new ConsultasModel();
         $trabajadores = $model->getAll();
+    }
+
+    public function getTrabajadoresBySalary()
+    {
+        $model = new ConsultasModel();
+        $trabajadoresBySalary = $model->getAllBySalary();
+    }
+
+    public function getTrabajadoresStandard()
+    {
+        $model = new ConsultasModel();
+        $trabajadores = $model->getStandard();
+    }
+
+    public function getCarlos()
+    {
+        $model = new ConsultasModel();
+        $trabajadores = $model->getCarlos();
     }
 }

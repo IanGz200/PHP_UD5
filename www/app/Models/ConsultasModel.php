@@ -15,15 +15,24 @@ class ConsultasModel extends BaseDbModel
         return $stmt->fetchAll();
     }
 
-    public function getAllBySalary()
+    public function getAllBySalary(): array
     {
         $sql = "SELECT * FROM trabajadores order by salarioBruto desc";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->fetchAll();
     }
 
-    public function getStandard()
+    public function getStandard(): array
     {
-        $sql = "SELECT * FROM trabajadores where ";
+        $sql = "SELECT * FROM trabajadores t left join aux_rol_trabajadores c on t.id_rol = c.id_rol";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->fetchAll();
+    }
+
+    public function getCarlos(): array
+    {
+        $sql = "SELECT * FROM trabajadores where username like 'Carlos%'";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->fetchAll();
     }
 }
