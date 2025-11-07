@@ -40,16 +40,16 @@ class FrontController
             '/consultas',
             function () {
                 $controlador = new ConsultasController();
-                $controlador->index();
+                $controlador->getTrabajadores();
             },
             'get'
         );
 
         Route::add(
-            '/',
+            '/consultas',
             function () {
                 $controlador = new ConsultasController();
-                $controlador->index();
+                $controlador->getTrabajadores();
             },
             'post'
         );

@@ -10,29 +10,48 @@ class ConsultasModel extends BaseDbModel
 {
     public function getAll(): array
     {
-        $sql = "SELECT * FROM trabajadores";
+        $sql = "select t.username,t.salarioBruto,t.retencionIRPF,t.activo,art.nombre_rol,ac.country_name 
+        from trabajadores t
+        left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
+        left join aux_countries ac on t.id_country = ac.id";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function getAllBySalary(): array
     {
-        $sql = "SELECT * FROM trabajadores order by salarioBruto desc";
+        $sql = "select t.username,t.salarioBruto,t.retencionIRPF,t.activo,art.nombre_rol,ac.country_name 
+        from trabajadores t
+        left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
+        left join aux_countries ac on t.id_country = ac.id
+        order by salarioBruto desc";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function getStandard(): array
     {
-        $sql = "SELECT * FROM trabajadores t left join aux_rol_trabajadores c on t.id_rol = c.id_rol";
+        $sql = "select t.username,t.salarioBruto,t.retencionIRPF,t.activo,art.nombre_rol,ac.country_name 
+        from trabajadores t
+        left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
+        left join aux_countries ac on t.id_country = ac.id
+        where art.nombre_rol like 'standard'";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 
     public function getCarlos(): array
     {
-        $sql = "SELECT * FROM trabajadores where username like 'Carlos%'";
+        $sql = "select t.username,t.salarioBruto,t.retencionIRPF,t.activo,art.nombre_rol,ac.country_name 
+        from trabajadores t
+        left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
+        left join aux_countries ac on t.id_country = ac.id
+        where t.username like 'Carlos%'";
         $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll();
     }
 }

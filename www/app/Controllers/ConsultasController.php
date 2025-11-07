@@ -9,27 +9,40 @@ use Com\Daw2\Models\ConsultasModel;
 
 class ConsultasController extends BaseController
 {
-    public function getTrabajadores()
+    public function set($consulta): void
     {
-        $model = new ConsultasModel();
-        $trabajadores = $model->getAll();
+        $data = [
+            'titulo' => 'Consultas',
+            'breadcrumb' => ['Inicio', 'Consultas'],
+            'trabajadores' => $consulta
+        ];
+        $this->view->showViews(
+            array('templates/header.view.php', 'consultas.view.php', 'templates/footer.view.php'),
+            $data,
+        );
     }
 
-    public function getTrabajadoresBySalary()
+    public function getTrabajadores(): void
     {
         $model = new ConsultasModel();
-        $trabajadoresBySalary = $model->getAllBySalary();
+        $this->set($model->getAll());
     }
 
-    public function getTrabajadoresStandard()
+    public function getTrabajadoresBySalary(): void
     {
         $model = new ConsultasModel();
-        $trabajadores = $model->getStandard();
+        $this->set($model->getAllBySalary());
     }
 
-    public function getCarlos()
+    public function getTrabajadoresStandard(): void
     {
         $model = new ConsultasModel();
-        $trabajadores = $model->getCarlos();
+        $this->set($model->getStandard());
+    }
+
+    public function getCarlos(): void
+    {
+        $model = new ConsultasModel();
+        $this->set($model->getCarlos());
     }
 }
