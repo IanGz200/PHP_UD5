@@ -5,6 +5,7 @@ namespace Com\Daw2\Core;
 use Com\Daw2\Controllers\ErroresController;
 use Com\Daw2\Controllers\InicioController;
 use Com\Daw2\Controllers\ConsultasController;
+use Com\Daw2\Controllers\PreparedStatemetsController;
 use Steampixel\Route;
 
 class FrontController
@@ -50,6 +51,28 @@ class FrontController
             function () {
                 $controlador = new ConsultasController();
                 $controlador->getTrabajadores();
+            },
+            'post'
+        );
+
+        /**
+         * Prepared statements con filtros
+         */
+
+        Route::add(
+            '/prepared',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->get();
+            },
+            'get'
+        );
+
+        Route::add(
+            '/prepared',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->get();
             },
             'post'
         );
