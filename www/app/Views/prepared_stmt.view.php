@@ -43,6 +43,26 @@
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
+                                <label for="pais">País:</label>
+                                <select
+                                        name="pais"
+                                        id="pais"
+                                        class="form-control"
+                                        data-placeholder="Pais"
+                                >
+                                    <option value="">-</option>
+                                    <?php foreach ($paises as $pais) { ?>
+                                        <option <?php
+                                            echo isset($_GET['pais']) && $_GET['pais'] == $pais['country_name']
+                                                    ? 'selected' : ''; ?>
+                                                value="<?php echo $pais['country_name']; ?>"
+                                        ><?php echo ucfirst($pais['country_name']); ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="mb-3">
                                 <label for="salario">Salario:</label>
                                 <div class="row">
                                     <div class="col-6">
@@ -51,8 +71,12 @@
                                                 class="form-control"
                                                 name="min_salario"
                                                 id="min_salario"
-                                                value=""
-                                                placeholder="Salario Mí­nimo" />
+                                                value="<?php
+                                                echo isset($input['min_salario']) && $input['min_salario'] !== ""
+                                                        ? $input['min_salario'] : '' ?>"
+                                                placeholder="<?php
+                                                echo isset($input['min_salario']) && $input['min_salario'] !== ""
+                                                        ? $input['min_salario'] : 'Salarío Mínimo' ?>" />
                                     </div>
                                     <div class="col-6">
                                         <input
@@ -60,8 +84,12 @@
                                                 class="form-control"
                                                 name="max_salario"
                                                 id="max_salario"
-                                                value=""
-                                                placeholder="Salario Máximo" />
+                                                value="<?php
+                                                echo isset($input['max_salario']) && $input['max_salario'] !== ""
+                                                        ? $input['max_salario'] : '' ?>"
+                                                placeholder="<?php
+                                                echo isset($input['max_salario']) && $input['max_salario'] !== ""
+                                                        ? $input['max_salario'] : 'Salario Máximo' ?>" />
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +97,11 @@
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="retencion">Retención:</label>
-                                <input type="number" class="form-control" name="retencion" id="retencion" value="" />
+                                <input type="number"
+                                       class="form-control"
+                                       name="retencion"
+                                       id="retencion"
+                                       value="<?php echo $input['retencion'] ?? ''; ?>" />
                             </div>
                         </div>
                     </div>
@@ -96,10 +128,11 @@
                 <table id="tabladatos" class="table table-striped">
                     <thead>
                     <tr>
-                        <th><a href="/consultas?order=1">Username</a></th>
-                        <th><a href="/consultas?order=5">Rol</a></th>
-                        <th><a href="/consultas?order=2">Salario Bruto</a></th>
-                        <th><a href="/consultas?order=3">Retencion IRPF</a></th>
+                        <th><a href="/prepared?order=1">Username</a></th>
+                        <th><a href="/prepared?order=2">Rol</a></th>
+                        <th><a href="/prepared?order=3">Salario Bruto</a></th>
+                        <th><a href="/prepared?order=4">Retencion IRPF</a></th>
+                        <th><a href="/prepared?order=5">País</a></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -110,6 +143,8 @@
                             <td><?php echo ucfirst($trabajador['nombre_rol']) ?></td>
                             <td><?php echo number_format($trabajador['salarioBruto'], 2, ',', '.') ?></td>
                             <td><?php echo $trabajador['retencionIRPF'] ?></td>
+                            <td><?php echo $trabajador['country_name'] ?></td>
+
                         </tr>
                     <?php }?>
                     </tbody>
