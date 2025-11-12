@@ -20,7 +20,7 @@
                                         class="form-control"
                                         name="username"
                                         id="username"
-                                        value="<?php echo $input['username'] ?? ''; ?>" />
+                                        value="<?php echo $input['username'] ?? ''; ?>"/>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
@@ -31,30 +31,31 @@
                                         id="rol"
                                         class="form-control"
                                         data-placeholder="Rol"
-                                        >
+                                >
                                     <option value="">-</option>
                                     <?php foreach ($roles as $rol) { ?>
-                                    <option <?php echo isset($_GET['rol']) && $_GET['rol'] == $rol['nombre_rol'] ? 'selected' : ''; ?>
-                                            value="<?php echo $rol['nombre_rol']; ?>"
-                                            ><?php echo ucfirst($rol['nombre_rol']); ?></option>
+                                        <option <?php echo isset($_GET['rol']) && $_GET['rol'] == $rol['nombre_rol'] ? 'selected' : ''; ?>
+                                                value="<?php echo $rol['nombre_rol']; ?>"
+                                        ><?php echo ucfirst($rol['nombre_rol']); ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
-                                <label for="pais">País:</label>
+                                <label for="paises">Países:</label>
                                 <select
-                                        name="pais"
-                                        id="pais"
-                                        class="form-control"
+                                        name="paises[]"
+                                        id="paises"
+                                        class="form-control select2"
                                         data-placeholder="Pais"
+                                        multiple
                                 >
                                     <option value="">-</option>
                                     <?php foreach ($paises as $pais) { ?>
                                         <option <?php
-                                            echo isset($_GET['pais']) && $_GET['pais'] == $pais['country_name']
-                                                    ? 'selected' : ''; ?>
+                                        echo isset($_GET['paises']) && in_array($pais['country_name'], $_GET['paises'])
+                                                ? 'selected' : ''; ?>
                                                 value="<?php echo $pais['country_name']; ?>"
                                         ><?php echo ucfirst($pais['country_name']); ?></option>
                                     <?php } ?>
@@ -76,7 +77,7 @@
                                                         ? $input['min_salario'] : '' ?>"
                                                 placeholder="<?php
                                                 echo isset($input['min_salario']) && $input['min_salario'] !== ""
-                                                        ? $input['min_salario'] : 'Salarío Mínimo' ?>" />
+                                                        ? $input['min_salario'] : 'Salarío Mínimo' ?>"/>
                                     </div>
                                     <div class="col-6">
                                         <input
@@ -89,7 +90,7 @@
                                                         ? $input['max_salario'] : '' ?>"
                                                 placeholder="<?php
                                                 echo isset($input['max_salario']) && $input['max_salario'] !== ""
-                                                        ? $input['max_salario'] : 'Salario Máximo' ?>" />
+                                                        ? $input['max_salario'] : 'Salario Máximo' ?>"/>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +102,7 @@
                                        class="form-control"
                                        name="retencion"
                                        id="retencion"
-                                       value="<?php echo $input['retencion'] ?? ''; ?>" />
+                                       value="<?php echo $input['retencion'] ?? ''; ?>"/>
                             </div>
                         </div>
                     </div>
@@ -117,7 +118,7 @@
         <div class="card shadow mb-4">
 
             <div
-                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo $titulo ?></h6>
             </div>
 
@@ -128,11 +129,46 @@
                 <table id="tabladatos" class="table table-striped">
                     <thead>
                     <tr>
-                        <th><a href="/prepared?order=1">Username</a></th>
-                        <th><a href="/prepared?order=2">Rol</a></th>
-                        <th><a href="/prepared?order=3">Salario Bruto</a></th>
-                        <th><a href="/prepared?order=4">Retencion IRPF</a></th>
-                        <th><a href="/prepared?order=5">País</a></th>
+                        <th><a href="/prepared?<?php
+                        if (!empty($_GET)) {
+                            $_GET['order'] = 1;
+                            echo http_build_query($_GET);
+                        } else {
+                            echo "order=1";
+                        }
+                        ?>">Username</a></th>
+                        <th><a href="/prepared?<?php
+                        if (!empty($_GET)) {
+                            $_GET['order'] = 2;
+                            echo http_build_query($_GET);
+                        } else {
+                            echo "order=2";
+                        }
+                        ?>">Rol</a></th>
+                        <th><a href="/prepared?<?php
+                        if (!empty($_GET)) {
+                            $_GET['order'] = 3;
+                            echo http_build_query($_GET);
+                        } else {
+                            echo "order=3";
+                        }
+                        ?>">Salario Bruto</a></th>
+                        <th><a href="/prepared?<?php
+                        if (!empty($_GET)) {
+                            $_GET['order'] = 4;
+                            echo http_build_query($_GET);
+                        } else {
+                            echo "order=4";
+                        }
+                        ?>">Retencion IRPF</a></th>
+                        <th><a href="/prepared?<?php
+                        if (!empty($_GET)) {
+                            $_GET['order'] = 5;
+                            echo http_build_query($_GET);
+                        } else {
+                            echo "order=5";
+                        }
+                        ?>">País</a></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,7 +182,7 @@
                             <td><?php echo $trabajador['country_name'] ?></td>
 
                         </tr>
-                    <?php }?>
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>

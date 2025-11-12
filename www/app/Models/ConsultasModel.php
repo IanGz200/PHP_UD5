@@ -84,18 +84,49 @@ class ConsultasModel extends BaseDbModel
             }
             $evaluaciones[] = implode(' and ', $condicion);
         }
-        if (!empty($filtered['pais'])) {
-            $evaluaciones[] = " ac.country_name like :pais ";
-            $variables['pais'] = $filtered['pais'];
+        if (!empty($filtered['paises'])) {
+            $i = 1;
+            foreach ($filtered['paises'] as $pais) {
+                $placeholders[] = ":pais$i";
+                $variables["pais$i"] = $pais;
+                $i++;
+            }
+            $evaluaciones[] = " ac.country_name IN (" . implode(' , ', $placeholders) . ")";
         }
         if (!empty($filtered['retencion'])) {
             $evaluaciones[] = "t.retencionIRPF like :retencion";
             $number = number_format(floatval($filtered['retencion']), 2, '.', ' ');
             $variables['retencion'] = $number;
         }
-        $sql .= " where" . implode(' and ', $evaluaciones);
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($variables);
+
+        if (!empty($filtered)) {
+            if (!empty($variables)) {
+                $sql .= " where" . implode(' and ', $evaluaciones);
+            }
+            if (!empty($filtered['order'])) {
+                switch ($filtered['order']) {
+                    case '1':
+                        $sql .= " ORDER BY t.username ASC";
+                        break;
+                    case '2':
+                        $sql .= " ORDER BY art.nombre_rol ASC";
+                        break;
+                    case '3':
+                        $sql .= " ORDER BY t.salarioBruto ASC";
+                        break;
+                    case '4':
+                        $sql .= " ORDER BY t.retencionIRPF ASC";
+                        break;
+                    case '5':
+                        $sql .= " ORDER BY ac.country_name ASC";
+                        break;
+                }
+            }
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($variables);
+        } else {
+            $stmt = $this->pdo->query($sql);
+        }
         return $stmt->fetchAll();
     }
 }
