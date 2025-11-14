@@ -23,13 +23,19 @@ class PreparedStatemetsController extends BaseController
         $aux_country = new AuxCountryModel();
         $paises = $aux_country->getAll();
 
+        $copiaGet = $_GET;
+        unset($copiaGet['order']);
+        $queryParams = http_build_query($copiaGet);
+
         $data = [
             'titulo' => 'Prepared Statemets',
             'breadcrumb' => ['Inicio', 'Prepared Statemets'],
             'trabajadores' => $consulta,
             'input' => $_GET,
             'roles' => $roles,
-            'paises' => $paises
+            'paises' => $paises,
+            'url' => 'prepared?' . $queryParams,
+            'order' => $model->getOrderInt($_GET),
         ];
         $this->view->showViews(
             array('templates/header.view.php', 'prepared_stmt.view.php', 'templates/footer.view.php'),

@@ -8,6 +8,7 @@ use Com\Daw2\Core\BaseDbModel;
 
 class ConsultasModel extends BaseDbModel
 {
+    private const ORDER_BY = ['username', 'nombre_rol', 'salarioBruto', 'retencionIRPF', 'country_name'];
     private const SELECT_FROM = "select t.username,art.nombre_rol,t.salarioBruto,t.retencionIRPF,ac.country_name
             from trabajadores t
             left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
@@ -93,32 +94,61 @@ class ConsultasModel extends BaseDbModel
             }
             $evaluaciones[] = " ac.country_name IN (" . implode(' , ', $placeholders) . ")";
         }
+        /**
+         * if (!empty($filtered['min_salario']) || !empty($filtered['max_salario'])) {
+         * $condicion = [];
+         * if (!empty($filtered['min_salario'])) {
+         * $condicion[] = " t.salarioBruto >= :min_salario ";
+         * $variables['min_salario'] = intval($filtered['min_salario']);
+         * }
+         * if (!empty($filtered['max_salario'])) {
+         * $condicion[] = " t.salarioBruto <= :max_salario ";
+         * $variables['max_salario'] = intval($filtered['max_salario']);
+         * }
+         * $evaluaciones[] = implode(' and ', $condicion);
+         * }
+         */
         if (!empty($filtered['retencion'])) {
             $evaluaciones[] = "t.retencionIRPF like :retencion";
             $number = number_format(floatval($filtered['retencion']), 2, '.', ' ');
             $variables['retencion'] = $number;
         }
-
         if (!empty($filtered)) {
             if (!empty($variables)) {
                 $sql .= " where" . implode(' and ', $evaluaciones);
             }
-            if (!empty($filtered['order'])) {
-                switch ($filtered['order']) {
-                    case '1':
+            if (!empty($this->getOrderInt($filtered))) {
+                var_dump($this->getOrderInt($filtered));
+                switch ($this->getOrderInt($filtered)) {
+                    case 1:
                         $sql .= " ORDER BY t.username ASC";
                         break;
-                    case '2':
+                    case -1:
+                        $sql .= " ORDER BY t.username DESC";
+                        break;
+                    case 2:
                         $sql .= " ORDER BY art.nombre_rol ASC";
                         break;
-                    case '3':
+                    case -2:
+                        $sql .= " ORDER BY art.nombre_rol DESC";
+                        break;
+                    case 3:
                         $sql .= " ORDER BY t.salarioBruto ASC";
                         break;
-                    case '4':
+                    case -3:
+                        $sql .= " ORDER BY t.salarioBruto DESC";
+                        break;
+                    case 4:
                         $sql .= " ORDER BY t.retencionIRPF ASC";
                         break;
-                    case '5':
+                    case -4:
+                        $sql .= " ORDER BY t.retencionIRPF DESC";
+                        break;
+                    case 5:
                         $sql .= " ORDER BY ac.country_name ASC";
+                        break;
+                    case -5:
+                        $sql .= " ORDER BY ac.country_name DESC";
                         break;
                 }
             }
@@ -128,5 +158,17 @@ class ConsultasModel extends BaseDbModel
             $stmt = $this->pdo->query($sql);
         }
         return $stmt->fetchAll();
+    }
+
+    public function getOrderInt(array $filters): int
+    {
+        if (
+            empty($filters['order']) || filter_var($filters['order'], FILTER_VALIDATE_INT) === false ||
+            abs((int)$filters['order']) < 1 || $filters['order'] > count(self::ORDER_BY)
+        ) {
+            return 1;
+        } else {
+            return (int)$filters['order'];
+        }
     }
 }

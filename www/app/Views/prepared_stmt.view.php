@@ -98,11 +98,34 @@
                         <div class="col-12 col-lg-4">
                             <div class="mb-3">
                                 <label for="retencion">Retención:</label>
-                                <input type="number"
-                                       class="form-control"
-                                       name="retencion"
-                                       id="retencion"
-                                       value="<?php echo $input['retencion'] ?? ''; ?>"/>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="min_retencion"
+                                                id="min_retencion"
+                                                value="<?php
+                                                echo isset($input['min_retencion']) && $input['min_retencion'] !== ""
+                                                        ? $input['min_retencion'] : '' ?>"
+                                                placeholder="<?php
+                                                echo isset($input['min_retencion']) && $input['min_retencion'] !== ""
+                                                        ? $input['min_retencion'] : 'Retención Mínima' ?>"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="max_retencion"
+                                                id="max_retencion"
+                                                value="<?php
+                                                echo isset($input['max_retencion']) && $input['max_retencion'] !== ""
+                                                        ? $input['max_retencion'] : '' ?>"
+                                                placeholder="<?php
+                                                echo isset($input['max_retencion']) && $input['max_retencion'] !== ""
+                                                        ? $input['max_retencion'] : 'Retención Máxima' ?>"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,46 +152,30 @@
                 <table id="tabladatos" class="table table-striped">
                     <thead>
                     <tr>
-                        <th><a href="/prepared?<?php
-                        if (!empty($_GET)) {
-                            $_GET['order'] = 1;
-                            echo http_build_query($_GET);
-                        } else {
-                            echo "order=1";
-                        }
-                        ?>">Username</a></th>
-                        <th><a href="/prepared?<?php
-                        if (!empty($_GET)) {
-                            $_GET['order'] = 2;
-                            echo http_build_query($_GET);
-                        } else {
-                            echo "order=2";
-                        }
-                        ?>">Rol</a></th>
-                        <th><a href="/prepared?<?php
-                        if (!empty($_GET)) {
-                            $_GET['order'] = 3;
-                            echo http_build_query($_GET);
-                        } else {
-                            echo "order=3";
-                        }
-                        ?>">Salario Bruto</a></th>
-                        <th><a href="/prepared?<?php
-                        if (!empty($_GET)) {
-                            $_GET['order'] = 4;
-                            echo http_build_query($_GET);
-                        } else {
-                            echo "order=4";
-                        }
-                        ?>">Retencion IRPF</a></th>
-                        <th><a href="/prepared?<?php
-                        if (!empty($_GET)) {
-                            $_GET['order'] = 5;
-                            echo http_build_query($_GET);
-                        } else {
-                            echo "order=5";
-                        }
-                        ?>">País</a></th>
+                        <th><a href="<?php echo $url ?>&order=<?php echo $order === 1 ? '-' : '' ?>1">
+                                Nombre de usuario <?php echo abs($order) === 1 ? '<i class="fas fa-sort-amount-' .
+                                        (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $url ?>&order=<?php echo $order === 2 ? '-' : '' ?>2">
+                                Salario <?php echo abs($order) === 2 ? '<i class="fas fa-sort-amount-' .
+                                        (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $url ?>&order=<?php echo $order === 3 ? '-' : '' ?>3">
+                                IRPF <?php echo abs($order) === 3 ? '<i class="fas fa-sort-amount-' .
+                                        (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $url ?>&order=<?php echo $order === 4 ? '-' : '' ?>4">
+                                Nacionalidad <?php echo abs($order) === 4 ? '<i class="fas fa-sort-amount-' .
+                                        (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
+                        </th>
+                        <th>
+                            <a href="<?php echo $url ?>&order=<?php echo $order === 5 ? '-' : '' ?>5">
+                                Rol <?php echo abs($order) === 5 ? '<i class="fas fa-sort-amount-' .
+                                        (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
