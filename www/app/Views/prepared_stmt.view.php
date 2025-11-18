@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card shadow mb-4">
             <form method="get" action="/prepared">
-                <input type="hidden" name="order" value="1"/>
+                <input type="hidden" name="order" value="<?php echo $order; ?>"/>
                 <div
                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
@@ -132,8 +132,8 @@
                 </div>
                 <div class="card-footer">
                     <div class="col-12 text-right">
-                        <a href="/proveedores" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
-                        <input type="submit" value="Aplicar filtros" name="enviar" class="btn btn-primary ml-2"/>
+                        <a href="/prepared" value="" name="reiniciar" class="btn btn-danger">Reiniciar filtros</a>
+                        <input type="submit" value="Aplicar filtros" class="btn btn-primary ml-2"/>
                     </div>
                 </div>
             </form>
@@ -158,22 +158,22 @@
                         </th>
                         <th>
                             <a href="<?php echo $url ?>&order=<?php echo $order === 2 ? '-' : '' ?>2">
-                                Salario <?php echo abs($order) === 2 ? '<i class="fas fa-sort-amount-' .
+                                Rol <?php echo abs($order) === 2 ? '<i class="fas fa-sort-amount-' .
                                         (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
                         </th>
                         <th>
                             <a href="<?php echo $url ?>&order=<?php echo $order === 3 ? '-' : '' ?>3">
-                                IRPF <?php echo abs($order) === 3 ? '<i class="fas fa-sort-amount-' .
+                                Salario <?php echo abs($order) === 3 ? '<i class="fas fa-sort-amount-' .
                                         (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
                         </th>
                         <th>
                             <a href="<?php echo $url ?>&order=<?php echo $order === 4 ? '-' : '' ?>4">
-                                Nacionalidad <?php echo abs($order) === 4 ? '<i class="fas fa-sort-amount-' .
+                                IRPF <?php echo abs($order) === 4 ? '<i class="fas fa-sort-amount-' .
                                         (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
                         </th>
                         <th>
                             <a href="<?php echo $url ?>&order=<?php echo $order === 5 ? '-' : '' ?>5">
-                                Rol <?php echo abs($order) === 5 ? '<i class="fas fa-sort-amount-' .
+                                Nacionalidad <?php echo abs($order) === 5 ? '<i class="fas fa-sort-amount-' .
                                         (($order < 0) ? 'up' : 'down') . '-alt"></i>' : ''; ?></a>
                         </th>
                     </tr>

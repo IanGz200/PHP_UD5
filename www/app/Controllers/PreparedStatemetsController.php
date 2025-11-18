@@ -34,7 +34,7 @@ class PreparedStatemetsController extends BaseController
             'input' => $_GET,
             'roles' => $roles,
             'paises' => $paises,
-            'url' => 'prepared?' . $queryParams,
+            'url' => '/prepared?' . $queryParams,
             'order' => $model->getOrderInt($_GET),
         ];
         $this->view->showViews(

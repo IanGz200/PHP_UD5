@@ -94,24 +94,17 @@ class ConsultasModel extends BaseDbModel
             }
             $evaluaciones[] = " ac.country_name IN (" . implode(' , ', $placeholders) . ")";
         }
-        /**
-         * if (!empty($filtered['min_salario']) || !empty($filtered['max_salario'])) {
-         * $condicion = [];
-         * if (!empty($filtered['min_salario'])) {
-         * $condicion[] = " t.salarioBruto >= :min_salario ";
-         * $variables['min_salario'] = intval($filtered['min_salario']);
-         * }
-         * if (!empty($filtered['max_salario'])) {
-         * $condicion[] = " t.salarioBruto <= :max_salario ";
-         * $variables['max_salario'] = intval($filtered['max_salario']);
-         * }
-         * $evaluaciones[] = implode(' and ', $condicion);
-         * }
-         */
-        if (!empty($filtered['retencion'])) {
-            $evaluaciones[] = "t.retencionIRPF like :retencion";
-            $number = number_format(floatval($filtered['retencion']), 2, '.', ' ');
-            $variables['retencion'] = $number;
+        if (!empty($filtered['min_retencion']) || !empty($filtered['max_retencion'])) {
+            $condicion = [];
+            if (!empty($filtered['min_retencion'])) {
+                $condicion[] = " t.retencionIRPF >= :min_retencion ";
+                $variables['min_retencion'] = intval($filtered['min_retencion']);
+            }
+            if (!empty($filtered['max_retencion'])) {
+                $condicion[] = " t.retencionIRPF <= :max_retencion ";
+                $variables['max_retencion'] = intval($filtered['max_retencion']);
+            }
+            $evaluaciones[] = implode(' and ', $condicion);
         }
         if (!empty($filtered)) {
             if (!empty($variables)) {
