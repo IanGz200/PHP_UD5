@@ -111,7 +111,6 @@ class ConsultasModel extends BaseDbModel
                 $sql .= " where" . implode(' and ', $evaluaciones);
             }
             if (!empty($this->getOrderInt($filtered))) {
-                var_dump($this->getOrderInt($filtered));
                 switch ($this->getOrderInt($filtered)) {
                     case 1:
                         $sql .= " ORDER BY t.username ASC";

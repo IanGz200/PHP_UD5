@@ -5,6 +5,7 @@ namespace Com\Daw2\Core;
 use Com\Daw2\Controllers\ErroresController;
 use Com\Daw2\Controllers\InicioController;
 use Com\Daw2\Controllers\ConsultasController;
+use Com\Daw2\Controllers\InsertionController;
 use Com\Daw2\Controllers\PreparedStatemetsController;
 use Steampixel\Route;
 
@@ -75,6 +76,19 @@ class FrontController
                 $controlador->get();
             },
             'post'
+        );
+
+        /**
+         * Modificar Base de datos
+         */
+
+        Route::add(
+            '/edit',
+            function () {
+                $controlador = new InsertionController();
+                $controlador->alta();
+            },
+            'get'
         );
 
         /**

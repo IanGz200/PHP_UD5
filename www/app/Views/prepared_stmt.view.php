@@ -197,27 +197,27 @@
                 <nav aria-label="Navegacion por paginas">
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <a class="page-link" href="/consultas?page=1&order=1" aria-label="First">
+                            <a class="page-link" href="<?php echo $url ?>?page=1&order=1" aria-label="First">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">First</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="/consultas?page=2&order=1" aria-label="Previous">
+                            <a class="page-link" href="<?php echo $url ?>?page=2&order=1" aria-label="Previous">
                                 <span aria-hidden="true">&lt;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
 
-                        <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item active"><a class="page-link" href="#"><?php echo $page ?></a></li>
                         <li class="page-item">
-                            <a class="page-link" href="/consultas?page=4&order=1" aria-label="Next">
+                            <a class="page-link" href="<?php echo $url ?>?page=4" aria-label="Next">
                                 <span aria-hidden="true">&gt;</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="/consultas?page=8&order=1" aria-label="Last">
+                            <a class="page-link" href="<?php echo $url ?>?page=8&order=1" aria-label="Last">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Last</span>
                             </a>

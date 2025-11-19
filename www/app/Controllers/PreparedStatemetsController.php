@@ -24,8 +24,10 @@ class PreparedStatemetsController extends BaseController
         $paises = $aux_country->getAll();
 
         $copiaGet = $_GET;
+        $page = $copiaGet['page'] ?? 1;
         unset($copiaGet['order']);
         $queryParams = http_build_query($copiaGet);
+
 
         $data = [
             'titulo' => 'Prepared Statemets',
