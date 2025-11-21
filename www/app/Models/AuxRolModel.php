@@ -14,4 +14,12 @@ class AuxRolModel extends BaseDbModel
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
+
+    public function find(int $id)
+    {
+        $sql = 'SELECT nombre_rol FROM aux_rol_trabajador WHERE id_rol like :id';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchAll();
+    }
 }

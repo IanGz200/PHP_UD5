@@ -44,4 +44,43 @@ class PreparedStatemetsController extends BaseController
             $data,
         );
     }
+
+    public function alta(): void
+    {
+
+        $model = new ConsultasModel();
+
+        $errors = $model->checkErrors($_POST);
+        if ($errors !== []) {
+            $this->newTrabajador($errors, filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        } else {
+            if ($model->insert($_POST)) {
+                header('location: /prepared');
+            } else {
+                $this->newTrabajador(
+                    ['username' => 'Error indeterminado al guardar'],
+                    filter_var_array($_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+                );
+            }
+        }
+    }
+    public function newTrabajador(array $errors = [], array $input = []): void
+    {
+        $auxRolModel = new AuxRolModel();
+        $roles = $auxRolModel->getAll();
+        $countryModel = new AuxCountryModel();
+        $countries = $countryModel->getAll();
+        $data = [
+            'titulo' => 'Alta trabajador',
+            'breadcumb' => ['Inicio', 'Trabajadores', 'Alta'],
+            'roles' => $roles,
+            'countries' => $countries,
+            'errors' => $errors,
+            'input' => $input
+        ];
+        $this->view->showViews(
+            array('templates/header.view.php', 'prepared_stmt.edit.view.php', 'templates/footer.view.php'),
+            $data
+        );
+    }
 }

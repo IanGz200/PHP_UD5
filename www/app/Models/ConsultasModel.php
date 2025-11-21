@@ -163,4 +163,90 @@ class ConsultasModel extends BaseDbModel
             return (int)$filters['order'];
         }
     }
+
+    public function checkErrors(array $data): array
+    {
+        $errors = [];
+        if (empty($data['username'])) {
+            $errors['username'] = 'El nombre es obligatorio';
+        } elseif (!preg_match('/^\w{4,50}$/iu', $data['username'])) {
+            $errors['username'] =
+                'El nombre debe estar formado por letras, números o _ y estar formado por entre 4 y 50 caracteres';
+        } else {
+            if ($this->find($data['username']) !== false) {
+                $errors['username'] = 'El nombre de usuario ya se encuentra en uso';
+            }
+        }
+        if (empty($data['salario_bruto'])) {
+            $errors['salario_bruto'] = 'El salario es obligatorio';
+        } elseif (!preg_match('/^\d+(,\d{1,2})?$/iu', $data['salario_bruto'])) {
+            $errors['salario_bruto'] = 'El salario será un número con máximo dos decimales. Separador de decimales ,';
+        } else {
+            $salario = str_replace(',', '.', $data['salario_bruto']);
+            if ($salario < 500) {
+                $errors['salario_bruto'] = 'El salario debe ser de la menos 500€';
+            }
+        }
+
+        if (empty($data['retencionIRPF'])) {
+            $errors['retencionIRPF'] = 'El IRPF es obligatorio';
+        } elseif (filter_var($data['retencionIRPF'], FILTER_VALIDATE_INT) === false) {
+            $errors['retencionIRPF'] = 'El IRPF debe ser un número entero entre 0 y 100';
+        } elseif ($data['retencionIRPF'] < 0 || $data['retencionIRPF'] > 100) {
+            $errors['retencionIRPF'] = 'El IRPF debe ser un número entero entre 0 y 100';
+        }
+
+        if (empty($data['id_rol'])) {
+            $errors['id_rol'] = 'El rol es obligatorio';
+        } elseif (filter_var($data['id_rol'], FILTER_VALIDATE_INT) === false) {
+            $errors['id_rol'] = 'El rol seleccionado no es válido';
+        } else {
+            $rolModel = new AuxRolModel();
+            if ($rolModel->find((int)$data['id_rol']) === false) {
+                $errors['id_rol'] = 'El rol seleccionado no es válido';
+            }
+        }
+
+        if (empty($data['id_country'])) {
+            $errors['id_country'] = 'La nacionalidad es obligatoria';
+        } elseif (filter_var($data['id_country'], FILTER_VALIDATE_INT) === false) {
+            $errors['id_country'] = 'La nacionalidad seleccionada no es válida';
+        } else {
+            $countryModel = new AuxCountryModel();
+            if ($countryModel->find((int)$data['id_country']) === false) {
+                $errors['id_country'] = 'La nacionalidad seleccionada no es válida';
+            }
+        }
+
+        if (!isset($data['activo'])) {
+            $errors['activo'] = 'Seleccione si el trabajador se encuentra activo';
+        } elseif (filter_var($data['activo'], FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) === null) {
+            $errors['activo'] = 'Valor seleccionado no válido';
+        }
+
+        return $errors;
+    }
+
+    public function insert(array $data): bool
+    {
+        $sql = 'insert into trabajadores (username, salarioBruto, retencionIRPF, activo, id_rol, id_country) 
+                values (:username, :salarioBruto, :retencionIRPF, :activo, :id_rol, :id_country)';
+        $userData = [
+            'username' => $data['username'],
+            'salarioBruto' => str_replace(',', '.', $data['salario_bruto']),
+            'retencionIRPF' => $data['retencionIRPF'],
+            'activo' => $data['activo'],
+            'id_rol' => $data['id_rol'],
+            'id_country' => $data['id_country']
+        ];
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($userData);
+    }
+    public function find(string $username): array|false
+    {
+        $sql = 'SELECT * FROM trabajadores WHERE username = :username';
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(['username' => $username]);
+        return $statement->fetch();
+    }
 }

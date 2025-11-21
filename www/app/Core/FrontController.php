@@ -83,10 +83,36 @@ class FrontController
          */
 
         Route::add(
-            '/edit',
+            '/prepared/edit/alta',
             function () {
-                $controlador = new InsertionController();
+                $controlador = new PreparedStatemetsController();
+                $controlador->newTrabajador();
+            },
+            'get'
+        );
+        Route::add(
+            '/prepared/edit/alta',
+            function () {
+                $controlador = new PreparedStatemetsController();
                 $controlador->alta();
+            },
+            'post'
+        );
+
+        Route::add(
+            '/prepared/edit/baja',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->baja();
+            },
+            'get'
+        );
+
+        Route::add(
+            '/prepared/edit/modificacion',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->modificacion();
             },
             'get'
         );
