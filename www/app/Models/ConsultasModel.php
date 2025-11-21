@@ -242,6 +242,13 @@ class ConsultasModel extends BaseDbModel
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($userData);
     }
+
+    public function update(array $data): bool
+    {
+        $sql = 'update trabajadores set';
+
+        return true;
+    }
     public function find(string $username): array|false
     {
         $sql = 'SELECT * FROM trabajadores WHERE username = :username';

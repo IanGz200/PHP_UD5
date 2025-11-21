@@ -142,8 +142,14 @@
 
             <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="col-6">
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo $titulo ?></h6>
+                </div>
+                <div class="col-6 text-right">
+                    <a href="/trabajadores/new" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Alta trabajador</a>
+                </div>
             </div>
+
 
             <!-- Card Body -->
             <div class="card-body" id="card_table">
@@ -187,7 +193,12 @@
                             <td><?php echo number_format($trabajador['salarioBruto'], 2, ',', '.') ?></td>
                             <td><?php echo $trabajador['retencionIRPF'] ?></td>
                             <td><?php echo $trabajador['country_name'] ?></td>
-
+                            <td>
+                                <a href="/trabajadores/edit/<?php echo $trabajador['username'] ?>"
+                                    class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                <a href="/trabajadores/delete/<?php echo $trabajador['username'] ?>"
+                                    class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                            </td>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -209,7 +220,8 @@
                             </a>
                         </li>
 
-                        <li class="page-item active"><a class="page-link" href="#"><?php echo $page ?></a></li>
+                        <li class="page-item active"><a class="page-link" href="#">
+                                <?php echo $page ?? '1' ?></a></li>
                         <li class="page-item">
                             <a class="page-link" href="<?php echo $url ?>?page=4" aria-label="Next">
                                 <span aria-hidden="true">&gt;</span>
