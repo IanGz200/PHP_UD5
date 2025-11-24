@@ -107,12 +107,29 @@ class FrontController
             },
             'get'
         );
-
         Route::add(
-            '/prepared/edit/modificacion',
+            '/prepared/edit/baja',
             function () {
                 $controlador = new PreparedStatemetsController();
-                $controlador->modificacion();
+                $controlador->baja();
+            },
+            'post'
+        );
+
+        Route::add(
+            '/prepared/edit/modificacion/(\w{4,50})',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->modificacion($username);
+            },
+            'get'
+        );
+
+        Route::add(
+            '/prepared/edit/modificacion/(\w{4,50})',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->modificacion($username);
             },
             'get'
         );
