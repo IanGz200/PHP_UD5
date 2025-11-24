@@ -135,6 +135,28 @@ class FrontController
         );
 
         /**
+         * Modo Oscuro
+         */
+
+        Route::add(
+            '/modo',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->modoOscuro();
+            },
+            'get'
+        );
+
+        Route::add(
+            '/modo',
+            function () {
+                $controlador = new PreparedStatemetsController();
+                $controlador->modoOscuro();
+            },
+            'post'
+        );
+
+        /**
          * Errores
          */
         Route::pathNotFound(

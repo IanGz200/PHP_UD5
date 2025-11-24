@@ -83,4 +83,24 @@ class PreparedStatemetsController extends BaseController
             $data
         );
     }
+
+    public function modoOscuro()
+    {
+        if (isset($_POST['modo'])) {
+            if ($_POST['modo'] == 'Oscuro') {
+                setcookie("modo", "Oscuro", time() + 3600);
+            }
+            if ($_POST['modo'] == 'Claro') {
+                setcookie("modo", "Claro", time() + 3600);
+            }
+        }
+        $data = [
+            'titulo' => 'Modo Oscuro',
+            'breadcumb' => ['Inicio', 'Modo Oscuro']
+        ];
+        $this->view->showViews(
+            array('templates/header.view.php', 'modo.view.php', 'templates/footer.view.php'),
+            $data
+        );
+    }
 }
