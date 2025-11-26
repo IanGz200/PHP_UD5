@@ -194,9 +194,9 @@
                             <td><?php echo $trabajador['retencionIRPF'] ?></td>
                             <td><?php echo $trabajador['country_name'] ?></td>
                             <td>
-                                <a href="/trabajadores/edit/<?php echo $trabajador['username'] ?>"
+                                <a href="/prepared/edit/modificacion/<?php echo $trabajador['username'] ?>"
                                     class="btn btn-success"><i class="fas fa-edit"></i></a>
-                                <a href="/trabajadores/delete/<?php echo $trabajador['username'] ?>"
+                                <a href="/prepared/edit/baja/<?php echo $trabajador['username'] ?>"
                                     class="btn btn-danger"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
@@ -207,33 +207,38 @@
             <div class="card-footer">
                 <nav aria-label="Navegacion por paginas">
                     <ul class="pagination justify-content-center">
+                        <?php if ($page > 1) { ?>
                         <li class="page-item">
-                            <a class="page-link" href="<?php echo $url ?>?page=1&order=1" aria-label="First">
+                            <a class="page-link" href="<?php echo $urlPage; ?>?page=1" aria-label="First">
                                 <span aria-hidden="true">&laquo;</span>
                                 <span class="sr-only">First</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="<?php echo $url ?>?page=2&order=1" aria-label="Previous">
+                            <a class="page-link" href="<?php echo $urlPage ?>?page=<?php echo $page - 1?>"
+                               aria-label="Previous">
                                 <span aria-hidden="true">&lt;</span>
                                 <span class="sr-only">Previous</span>
                             </a>
                         </li>
-
+                        <?php } ?>
                         <li class="page-item active"><a class="page-link" href="#">
-                                <?php echo $page ?? '1' ?></a></li>
+                                <?php echo $page ?></a></li>
+                        <?php if ($page < $pageMax) { ?>
                         <li class="page-item">
-                            <a class="page-link" href="<?php echo $url ?>?page=4" aria-label="Next">
+                            <a class="page-link" href="<?php echo $urlPage ?>?page=4" aria-label="Next">
                                 <span aria-hidden="true">&gt;</span>
                                 <span class="sr-only">Next</span>
                             </a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="<?php echo $url ?>?page=8&order=1" aria-label="Last">
+                            <a class="page-link" href="<?php echo $urlPage ?>?page=<?php echo $pageMax ?>"
+                               aria-label="Last">
                                 <span aria-hidden="true">&raquo;</span>
                                 <span class="sr-only">Last</span>
                             </a>
                         </li>
+                        <?php } ?>
                     </ul>
                 </nav>
             </div>

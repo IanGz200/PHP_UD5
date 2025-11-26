@@ -24,21 +24,26 @@ class PreparedStatemetsController extends BaseController
         $paises = $aux_country->getAll();
 
         $copiaGet = $_GET;
-        $page = $copiaGet['page'] ?? 1;
+        unset($copiaGet['page']);
+        $queryParamsPage = http_build_query($copiaGet);
         unset($copiaGet['order']);
         $queryParams = http_build_query($copiaGet);
-
+        $pageMax = $model->getNumPages($_GET);
 
         $data = [
             'titulo' => 'Prepared Statemets',
             'breadcrumb' => ['Inicio', 'Prepared Statemets'],
             'trabajadores' => $consulta,
-            'input' => $_GET,
+            'input' => filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS),
             'roles' => $roles,
             'paises' => $paises,
             'url' => '/prepared?' . $queryParams,
+            'urlPage' => '/prepared?' . $queryParamsPage,
             'order' => $model->getOrderInt($_GET),
+            'page' => $model->getPage($_GET),
+            'pageMax' => $pageMax
         ];
+
         $this->view->showViews(
             array('templates/header.view.php', 'prepared_stmt.view.php', 'templates/footer.view.php'),
             $data,
@@ -84,16 +89,42 @@ class PreparedStatemetsController extends BaseController
         );
     }
 
+    public function update(string $username, array $input = [], array $errors = []): void
+    {
+        $consultasModel = new ConsultasModel();
+        $usuario = $consultasModel->find($username);
+        if ($usuario === false) {
+            header('location: /prepared');
+        } else {
+            $auxRolModel = new AuxRolModel();
+            $roles = $auxRolModel->getAll();
+            $auxCountryModel = new AuxCountryModel();
+            $auxCountry = $auxCountryModel->getAll();
+            $data = [
+                'titulo' => 'Actualizar trabajador',
+                'breadcrumb' => ['Incio', 'Editar trabajadores', 'Actualizar trabajador'],
+                'roles' => $roles,
+                'paises' => $auxCountry,
+                'errors' => $errors,
+                'input' => $input !== [] ? $input : $usuario,
+            ];
+
+            $this->view->showViews(
+                array('templates/header.view.php', 'prepared_stmt.edit.view.php', 'templates/footer.view.php'),
+                $data
+            );
+
+        }
+    }
+
     public function modoOscuro()
     {
-        if (isset($_POST['modo'])) {
-            if ($_POST['modo'] == 'Oscuro') {
-                setcookie("modo", "Oscuro", time() + 3600);
-            }
-            if ($_POST['modo'] == 'Claro') {
-                setcookie("modo", "Claro", time() + 3600);
-            }
+        $modo = ['oscuro','claro'];
+        if (in_array($_POST['modo'], $modo)) {
+            setcookie('modo', $_POST['modo'], time() + (86400 * 30));
+            $_COOKIE['modo'] = $_POST['modo'];
         }
+
         $data = [
             'titulo' => 'Modo Oscuro',
             'breadcumb' => ['Inicio', 'Modo Oscuro']

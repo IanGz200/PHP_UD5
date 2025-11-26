@@ -30,9 +30,7 @@
   <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed <?php if (isset($_COOKIE['modo']) and $_COOKIE['modo'] == 'Oscuro') {
-    echo 'dark-mode';
-                                                       }?>">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -76,7 +74,7 @@
           <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Usuario</a>
+          <a href="#" class="d-block"><?php echo $_SESSION['username'] ?? 'Usuario' ?></a>
         </div>
       </div>
      <?php

@@ -35,7 +35,8 @@ declare(strict_types=1);
                         <input type="text" class="form-control"
                                name="salario_bruto" id="salario_bruto"
                                value="<?php
-                                echo $input['salario_bruto'] ?? ''; ?>"
+                                echo isset($input['salarioBruto']) ?
+                                       str_replace('.', ',', $input['salarioBruto']) : ''; ?>"
                                maxlength="20"
                                placeholder="3456,60"
                         />
@@ -52,7 +53,7 @@ declare(strict_types=1);
                         <input type="text" class="form-control"
                                name="retencionIRPF" id="retencionIRPF"
                                value="<?php
-                                echo $input['retencionIRPF'] ?? ''; ?>"
+                                echo isset($input['retencionIRPF']) ? (int)$input['retencionIRPF'] : ''; ?>"
                                maxlength="3"
                                placeholder="30"
                         />
@@ -93,8 +94,8 @@ declare(strict_types=1);
                                 ?>
                                 <option value="<?php echo $country['id'] ?>"
                                         <?php echo (isset(
-                                            $_POST['id_country']
-                                        ) && $_POST['id_country'] == $country['id']) ?
+                                            $input['id_country']
+                                        ) && $input['id_country'] == $country['id']) ?
                                                 'selected' : '' ?>><?php echo ucfirst($country['country_name']); ?>
                                 </option>
                                 <?php
@@ -108,8 +109,10 @@ declare(strict_types=1);
                     <div class="form-group">
                         <label for="activo">Activo:</label>
                         <select name="activo" id="activo" class="form-control">
-                            <option value="1">Sí</option>
-                            <option value="0">No</option>
+                            <option value="1" <?php echo isset($input['activo']) && $input['activo'] == 1 ?
+                                    'selected' : ''; ?>>Sí</option>
+                            <option value="0" <?php echo isset($input['activo']) && $input['activo'] == 0 ?
+                                    'selected' : ''; ?>>No</option>
                         </select>
                         <p class="text-danger small"><?php echo $errors['activo'] ?? ''; ?></p>
                     </div>

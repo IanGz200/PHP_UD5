@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace Com\Daw2\Models;
 
+use Com\Daw2\Controllers\PreparedStatemetsController;
 use Com\Daw2\Core\BaseDbModel;
 
 class ConsultasModel extends BaseDbModel
 {
     private const ORDER_BY = ['username', 'nombre_rol', 'salarioBruto', 'retencionIRPF', 'country_name'];
-    private const SELECT_FROM = "select t.username,art.nombre_rol,t.salarioBruto,t.retencionIRPF,ac.country_name
-            from trabajadores t
+    private const DEFAUL_ORDER = 1;
+    private const ELEMENTS_PER_PAGE = 25;
+    private const QUERY_FROM = 'from trabajadores t
             left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
-            left join aux_countries ac on t.id_country = ac.id";
+            left join aux_countries ac on t.id_country = ac.id';
+    private const SELECT_FROM = 'select t.username,art.nombre_rol,t.salarioBruto,t.retencionIRPF,ac.country_name 
+            ' . self::QUERY_FROM;
+    private const SELECT_COUNT = 'select count(*) as total ' . self::QUERY_FROM;
+
     public function getAll(): array
     {
-        $sql = "select t.username,t.salarioBruto,t.retencionIRPF,t.activo,art.nombre_rol,ac.country_name 
-        from trabajadores t
-        left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
-        left join aux_countries ac on t.id_country = ac.id";
+        $sql = self::SELECT_FROM;
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
@@ -164,7 +167,7 @@ class ConsultasModel extends BaseDbModel
         }
     }
 
-    public function checkErrors(array $data): array
+    public function checkErrors(array $data, ?string $username): array
     {
         $errors = [];
         if (empty($data['username'])) {
@@ -173,8 +176,10 @@ class ConsultasModel extends BaseDbModel
             $errors['username'] =
                 'El nombre debe estar formado por letras, números o _ y estar formado por entre 4 y 50 caracteres';
         } else {
-            if ($this->find($data['username']) !== false) {
-                $errors['username'] = 'El nombre de usuario ya se encuentra en uso';
+            if (($username === null) || $username !== $data['username']) {
+                if ($this->find($data['username']) !== false) {
+                    $errors['username'] = 'El nombre de usuario ya se encuentra en uso';
+                }
             }
         }
         if (empty($data['salario_bruto'])) {
@@ -243,12 +248,6 @@ class ConsultasModel extends BaseDbModel
         return $stmt->execute($userData);
     }
 
-    public function update(array $data): bool
-    {
-        $sql = 'update trabajadores set';
-
-        return true;
-    }
     public function find(string $username): array|false
     {
         $sql = 'SELECT * FROM trabajadores WHERE username = :username';

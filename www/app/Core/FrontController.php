@@ -13,6 +13,7 @@ class FrontController
 {
     public static function main(): void
     {
+        session_start();
         /**
          * Por defecto
          */
@@ -107,14 +108,6 @@ class FrontController
             },
             'get'
         );
-        Route::add(
-            '/prepared/edit/baja',
-            function () {
-                $controlador = new PreparedStatemetsController();
-                $controlador->baja();
-            },
-            'post'
-        );
 
         Route::add(
             '/prepared/edit/modificacion/(\w{4,50})',
@@ -152,6 +145,28 @@ class FrontController
             function () {
                 $controlador = new PreparedStatemetsController();
                 $controlador->modoOscuro();
+            },
+            'post'
+        );
+
+        /**
+         * Cambiar sesiones y login usuarios
+         */
+
+        Route::add(
+            '/change-username',
+            function () {
+                $controlador = new InicioController();
+                $controlador->changeUsername();
+            },
+            'get'
+        );
+
+        Route::add(
+            '/change-username',
+            function () {
+                $controlador = new InicioController();
+                $controlador->doChangeUsername();
             },
             'post'
         );
