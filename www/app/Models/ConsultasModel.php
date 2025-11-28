@@ -10,7 +10,7 @@ use Com\Daw2\Core\BaseDbModel;
 class ConsultasModel extends BaseDbModel
 {
     private const ORDER_BY = ['username', 'nombre_rol', 'salarioBruto', 'retencionIRPF', 'country_name'];
-    private const DEFAUL_ORDER = 1;
+    private const DEFAULT_ORDER = 1;
     private const ELEMENTS_PER_PAGE = 25;
     private const QUERY_FROM = 'from trabajadores t
             left join ud5.aux_rol_trabajador art on t.id_rol = art.id_rol
@@ -62,112 +62,124 @@ class ConsultasModel extends BaseDbModel
     /**
      * Ejercicios de prepared statements
      */
-    public function getFilteredUsers($filtered): array
+    public function getFilteredUsers($filters): array
     {
         $sql = self::SELECT_FROM;
-        $evaluaciones = [];
-        $variables = [];
+        $arrayWhere = $this->getWhere($filters);
+        $condiciones = $arrayWhere['condiciones'];
+        $valores = $arrayWhere['valores'];
+        $orderInt = $this->getOrderInt($filters);
+        $page = $this->getPage($filters);
+        $offset = ($page - 1) * self::ELEMENTS_PER_PAGE;
 
-        if (!empty($filtered['username'])) {
-            $evaluaciones[] = " t.username like :username";
-            $variables['username'] = "%" . $filtered['username'] . "%";
-        }
-        if (!empty($filtered['rol'])) {
-            $evaluaciones[] = " art.nombre_rol like :rol ";
-            $variables['rol'] = $filtered['rol'];
-        }
-        if (!empty($filtered['min_salario']) || !empty($filtered['max_salario'])) {
-            $condicion = [];
-            if (!empty($filtered['min_salario'])) {
-                $condicion[] = " t.salarioBruto >= :min_salario ";
-                $variables['min_salario'] = intval($filtered['min_salario']);
-            }
-            if (!empty($filtered['max_salario'])) {
-                $condicion[] = " t.salarioBruto <= :max_salario ";
-                $variables['max_salario'] = intval($filtered['max_salario']);
-            }
-            $evaluaciones[] = implode(' and ', $condicion);
-        }
-        if (!empty($filtered['paises'])) {
-            $i = 1;
-            foreach ($filtered['paises'] as $pais) {
-                $placeholders[] = ":pais$i";
-                $variables["pais$i"] = $pais;
-                $i++;
-            }
-            $evaluaciones[] = " ac.country_name IN (" . implode(' , ', $placeholders) . ")";
-        }
-        if (!empty($filtered['min_retencion']) || !empty($filtered['max_retencion'])) {
-            $condicion = [];
-            if (!empty($filtered['min_retencion'])) {
-                $condicion[] = " t.retencionIRPF >= :min_retencion ";
-                $variables['min_retencion'] = intval($filtered['min_retencion']);
-            }
-            if (!empty($filtered['max_retencion'])) {
-                $condicion[] = " t.retencionIRPF <= :max_retencion ";
-                $variables['max_retencion'] = intval($filtered['max_retencion']);
-            }
-            $evaluaciones[] = implode(' and ', $condicion);
-        }
-        if (!empty($filtered)) {
-            if (!empty($variables)) {
-                $sql .= " where" . implode(' and ', $evaluaciones);
-            }
-            if (!empty($this->getOrderInt($filtered))) {
-                switch ($this->getOrderInt($filtered)) {
-                    case 1:
-                        $sql .= " ORDER BY t.username ASC";
-                        break;
-                    case -1:
-                        $sql .= " ORDER BY t.username DESC";
-                        break;
-                    case 2:
-                        $sql .= " ORDER BY art.nombre_rol ASC";
-                        break;
-                    case -2:
-                        $sql .= " ORDER BY art.nombre_rol DESC";
-                        break;
-                    case 3:
-                        $sql .= " ORDER BY t.salarioBruto ASC";
-                        break;
-                    case -3:
-                        $sql .= " ORDER BY t.salarioBruto DESC";
-                        break;
-                    case 4:
-                        $sql .= " ORDER BY t.retencionIRPF ASC";
-                        break;
-                    case -4:
-                        $sql .= " ORDER BY t.retencionIRPF DESC";
-                        break;
-                    case 5:
-                        $sql .= " ORDER BY ac.country_name ASC";
-                        break;
-                    case -5:
-                        $sql .= " ORDER BY ac.country_name DESC";
-                        break;
-                }
-            }
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute($variables);
-        } else {
+        $orderField = self::ORDER_BY[abs($orderInt) - 1] . ($orderInt < 0 ? ' DESC' : '');
+
+        if ($condiciones === []) {
+            $sql .= " ORDER BY $orderField LIMIT $offset, " . self::ELEMENTS_PER_PAGE;
             $stmt = $this->pdo->query($sql);
+        } else {
+            $sql .= " WHERE " . implode(' AND ', $condiciones) .
+                " ORDER BY $orderField LIMIT $offset, " . self::ELEMENTS_PER_PAGE;
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($valores);
         }
         return $stmt->fetchAll();
+    }
+
+    public function countByFilters(array $filters): int
+    {
+        $sql = self::SELECT_COUNT;
+        $arrayWhere = $this->getWhere($filters);
+        $condiciones = $arrayWhere['condiciones'];
+        $valores = $arrayWhere['valores'];
+        if ($condiciones !== []) {
+            $sql .= " WHERE " . implode(' AND ', $condiciones);
+        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($valores);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function getWhere(array $filters): array
+    {
+        $condiciones =  [];
+        $valores = [];
+        if (!empty($filters['username'])) {
+            $condiciones[] = 't.username like :username';
+            $valores['username'] = '%' . $filters['username'] . '%';
+        }
+        if (!empty($filters['rol'])) {
+            $condiciones[] = 'art.nombre_rol like :rol';
+            $valores['rol'] = '%' . $filters['rol'] . '%';
+        }
+        if (!empty($filters['min_salario'])) {
+            $condiciones[]  = 't.salarioBruto >= :min_salario';
+            $valores['min_salario'] = $filters['min_salario'];
+        }
+        if (!empty($filters['max_salario'])) {
+            $condiciones[] = 't.salarioBruto <= :max_salario';
+            $valores['max_salario'] = $filters['max_salario'];
+        }
+        if (!empty($filters['min_retencion'])) {
+            $condiciones[] = 't.retencionIRPF >= :min_retencion';
+            $valores['min_retencion'] = $filters['min_retencion'];
+        }
+        if (!empty($filters['max_retencion'])) {
+            $condiciones[] = 't.retencionIRPF <= :max_retencion';
+            $valores['max_retencion'] = $filters['max_retencion'];
+        }
+        if (!empty($filters['paises'])) {
+            $i = 1;
+            foreach ($filters['paises'] as $pais) {
+                $placeholders[]  = ":pais$i";
+                $valores["pais$i"] = $pais;
+                $i++;
+            }
+            $condiciones[] = "ac.country_name IN (" . implode(', ', $placeholders) . ")";
+        }
+
+        return [
+            'condiciones' => $condiciones,
+            'valores' => $valores
+        ];
     }
 
     public function getOrderInt(array $filters): int
     {
         if (
-            empty($filters['order']) || filter_var($filters['order'], FILTER_VALIDATE_INT) === false ||
-            abs((int)$filters['order']) < 1 || $filters['order'] > count(self::ORDER_BY)
+            empty($filters['order']) || filter_var($filters['order'], FILTER_VALIDATE_INT) === false
         ) {
-            return 1;
+            return self::DEFAULT_ORDER;
         } else {
-            return (int)$filters['order'];
+            if (abs((int)$filters['order']) < 1 || abs((int)$filters['order']) > count(self::ORDER_BY)) {
+                return self::DEFAULT_ORDER;
+            } else {
+                return (int)$filters['order'];
+            }
         }
     }
 
-    public function checkErrors(array $data, ?string $username): array
+    public function getPage(array $filters): int
+    {
+        if (
+            empty($filters['page']) ||
+            filter_var(
+                $filters['page'],
+                FILTER_VALIDATE_INT
+            ) === false || (int)$_GET['page'] < 1
+        ) {
+            return 1;
+        } else {
+            return (int)$_GET['page'];
+        }
+    }
+
+    public function getNumPages(array $filter): int
+    {
+        return (int)ceil($this->countByFilters($filter) / self::ELEMENTS_PER_PAGE);
+    }
+
+    public function checkErrors(array $data, ?string $username = null): array
     {
         $errors = [];
         if (empty($data['username'])) {
@@ -246,6 +258,29 @@ class ConsultasModel extends BaseDbModel
         ];
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($userData);
+    }
+
+    public function edit(array $data, string $username): bool
+    {
+        $sql = 'update trabajadores 
+                set salarioBruto = :salarioBruto, retencionIRPF = :retencionIRPF, 
+                    activo = :activo, id_rol = :id_rol, id_country = :id_country, username = :username 
+                where username = :usernameOriginal';
+        $data['usernameOriginal'] = $username;
+        $data['salarioBruto'] = str_replace(',', '.', $data['salario_bruto']);
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    public function delete(string $username): bool
+    {
+        $sql = 'delete from trabajadores where username = :username';
+        $stmt = $this->pdo->prepare($sql);
+        if ($stmt->execute(['username' => $username])) {
+            return $stmt->rowCount() === 1;
+        } else {
+            return false;
+        }
     }
 
     public function find(string $username): array|false

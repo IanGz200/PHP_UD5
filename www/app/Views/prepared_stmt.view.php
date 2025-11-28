@@ -146,7 +146,7 @@
                 <h6 class="m-0 font-weight-bold text-primary"><?php echo $titulo ?></h6>
                 </div>
                 <div class="col-6 text-right">
-                    <a href="/trabajadores/new" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Alta trabajador</a>
+                    <a href="/prepared/edit/alta" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Alta trabajador</a>
                 </div>
             </div>
 

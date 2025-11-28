@@ -111,7 +111,7 @@ class FrontController
 
         Route::add(
             '/prepared/edit/modificacion/(\w{4,50})',
-            function () {
+            function ($username) {
                 $controlador = new PreparedStatemetsController();
                 $controlador->modificacion($username);
             },
@@ -120,11 +120,11 @@ class FrontController
 
         Route::add(
             '/prepared/edit/modificacion/(\w{4,50})',
-            function () {
+            function ($username) {
                 $controlador = new PreparedStatemetsController();
-                $controlador->modificacion($username);
+                $controlador->doModificacion($username);
             },
-            'get'
+            'post'
         );
 
         /**

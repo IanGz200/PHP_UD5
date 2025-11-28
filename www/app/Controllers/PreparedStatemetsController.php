@@ -89,7 +89,7 @@ class PreparedStatemetsController extends BaseController
         );
     }
 
-    public function update(string $username, array $input = [], array $errors = []): void
+    public function modificacion(string $username, array $input = [], array $errors = []): void
     {
         $consultasModel = new ConsultasModel();
         $usuario = $consultasModel->find($username);
@@ -113,7 +113,33 @@ class PreparedStatemetsController extends BaseController
                 array('templates/header.view.php', 'prepared_stmt.edit.view.php', 'templates/footer.view.php'),
                 $data
             );
+        }
+    }
 
+    public function doModificacion(string $username): void
+    {
+        $model = new ConsultasModel();
+        $errors = $model->checkErrors($_POST, $username);
+        if ($errors !== []) {
+            $this->modificacion(
+                $username,
+                filter_input_array(
+                    INPUT_POST,
+                    FILTER_SANITIZE_FULL_SPECIAL_CHARS
+                ),
+                $errors
+            );
+        } else {
+            $model = new ConsultasModel();
+            if ($model->edit($_POST, $username)) {
+                header('location: /prepared');
+            } else {
+                $this->modificacion(
+                    $username,
+                    filter_input_array(INPUT_POST),
+                    ['username' => 'Error indeterminado al guardar']
+                );
+            }
         }
     }
 

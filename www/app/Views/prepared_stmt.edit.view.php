@@ -73,8 +73,10 @@ declare(strict_types=1);
                             foreach ($roles as $rol) {
                                 ?>
                                 <option
-                                        value="<?php echo $rol['id_rol'] ?>"
-                                        <?php echo isset($_POST['id_rol']) && $_POST['id_rol'] == $rol['id_rol'] ?
+                                        value="<?php echo $rol['nombre_rol'] ?>"
+                                        <?php echo isset(
+                                            $input['id_rol']
+                                        ) && $input['id_rol'] == $rol['id_rol'] ?
                                                 'selected' : ''; ?>>
                                     <?php echo ucfirst($rol['nombre_rol']) ?>
                                 </option>
@@ -90,17 +92,15 @@ declare(strict_types=1);
                         <label for="id_country">Países:</label>
                         <select name="id_country" id="id_country" class="form-control select2">
                             <option value="">-</option>
-                            <?php foreach ($countries as $country) {
-                                ?>
-                                <option value="<?php echo $country['id'] ?>"
-                                        <?php echo (isset(
-                                            $input['id_country']
-                                        ) && $input['id_country'] == $country['id']) ?
-                                                'selected' : '' ?>><?php echo ucfirst($country['country_name']); ?>
-                                </option>
-                                <?php
-                            }
-                            ?>
+                            <?php foreach ($paises as $pais) { ?>
+                                <option <?php
+                                echo isset(
+                                    $input['id_country']
+                                        ) && in_array($pais['country_name'], $input['id_country'])
+                                        ? 'selected' : ''; ?>
+                                        value="<?php echo $pais['country_name']; ?>"
+                                ><?php echo ucfirst($pais['country_name']); ?></option>
+                            <?php } ?>
                         </select>
                         <p class="text-danger small"><?php echo $errors['id_country'] ?? ''; ?></p>
                     </div>
